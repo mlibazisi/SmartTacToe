@@ -1,0 +1,6 @@
+.idea
+/temp/*
+!temp/sessions/.keep
+!temp/logs/.keep
+/vendor/*
+!vendor/.keep
