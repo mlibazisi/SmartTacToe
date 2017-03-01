@@ -11,7 +11,10 @@
 /*
  * This is the Front Controller that handles all requests
  */
-require_once __DIR__.'/../vendor/autoload.php';
+
+define( 'WEB_ROOT', __DIR__ );
+
+require_once WEB_ROOT . '/../vendor/autoload.php';
 
 use Services\RequestService;
 use Services\ResponseService;
@@ -20,7 +23,7 @@ use Symfony\Component\Yaml\Yaml;
 $request        = new RequestService();
 $request_path   = $request->getPath();
 $path_map       = [];
-$routing_file   =  __DIR__ . '/../config/routing.yml';
+$routing_file   =  WEB_ROOT . '/../config/routing.yml';
 $routes         = Yaml::parse(
     file_get_contents( $routing_file )
 );

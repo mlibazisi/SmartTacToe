@@ -9,6 +9,7 @@
  */
 
 use Services\ResponseService;
+use Exceptions\ServiceException;
 
 /**
  * The controller base class
@@ -20,6 +21,49 @@ use Services\ResponseService;
  */
 abstract class Controller
 {
+
+    private static $registry;
+
+    /**
+     * Instantiate a service
+     *
+     * @param string    $service    The service name
+     * @param array     $args       The service arguments
+     * @return mixed
+     * @throws ServiceException
+     */
+    public function get( $service, array $args = []  )
+    {
+
+        if ( !isset( self::$registry[ $service ] ) ) {
+
+            $class = 'Services\\' . $service . 'Service';
+
+            if ( $args ) {
+
+                try {
+
+                    $instance                   = new ReflectionClass( $class );
+                    self::$registry[ $service ] =  $instance->newInstanceArgs( $args );
+
+                } catch ( Exception $e ) {
+
+                    $message    = 'Failed to load service ' . $class;
+                    $logger     = new \Services\LogService();
+                    $logger->log( $message );
+
+                    throw new ServiceException( $e->getMessage() );
+                }
+
+            } else {
+                self::$registry[ $service ] = new $class;
+            }
+
+        }
+
+        return self::$registry[ $service ];
+
+    }
 
     /**
      * Instantiates the HTTP Response Wrapper
