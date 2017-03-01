@@ -78,7 +78,7 @@ class RequestService implements RequestServiceInterface
      * Returns all $_GET params if $key is not specified,
      * otherwise it returns the $_GET parameter specified by $key
      *
-     * @param   mixed $key The name of the GET parameter
+     * @param   string $key The name of the GET parameter
      * @return  mixed Array of all parameters, or string
      */
     public function query( $key = NULL )
@@ -100,7 +100,7 @@ class RequestService implements RequestServiceInterface
      * Returns all $_POST params if $key is not specified,
      * otherwise it returns the $_POST parameter specified by $key
      *
-     * @param   mixed $key The name of the POST parameter
+     * @param   string $key The name of the POST parameter
      * @return  mixed Array of all parameters, or string
      */
     public function data( $key = NULL )

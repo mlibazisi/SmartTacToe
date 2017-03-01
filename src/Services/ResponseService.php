@@ -62,9 +62,9 @@ class ResponseService implements ResponseServiceInterface
     /**
      * The constructor
      *
-     * @param string $content The HTTP response body
-     * @param int $status_code The HTTP response status code
-     * @param array $headers The responss headers
+     * @param string    $content        The HTTP response body
+     * @param int       $status_code    The HTTP response status code
+     * @param array     $headers        The responss headers
      */
     public function __construct( $content = '', $status_code = self::HTTP_OK, $headers = [] )
     {

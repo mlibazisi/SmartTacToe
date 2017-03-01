@@ -21,9 +21,9 @@ interface ResponseServiceInterface
     /**
      * The constructor
      *
-     * @param string $content The HTTP response body
-     * @param int $status_code The HTTP response status code
-     * @param array $headers The response headers
+     * @param string    $content The HTTP response body
+     * @param int       $status_code The HTTP response status code
+     * @param array     $headers The response headers
      */
     public function __construct( $content = '', $status_code = 200, $headers = [] );
 

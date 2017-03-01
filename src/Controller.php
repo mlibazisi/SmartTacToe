@@ -24,9 +24,9 @@ abstract class Controller
     /**
      * Instantiates the HTTP Response Wrapper
      *
-     * @param mixed $content The body of the response
-     * @param int $status The HTTP response status code
-     * @params array $headers Optional Custom headers
+     * @param string    $content    The body of the response
+     * @param int       $status     The HTTP response status code
+     * @params array    $headers    Optional Custom headers
      * @return ResponseService
      */
     public function response( $content, $status = ResponseService::HTTP_OK, $headers = [] )
@@ -39,9 +39,9 @@ abstract class Controller
     /**
      * A Controller::response wrapper for JSON responses
      *
-     * @param mixed $content The body of the response
-     * @param int $status The HTTP response status code
-     * @params array $headers Optional Custom headers
+     * @param mixed     $content    The body of the response
+     * @param int       $status     The HTTP response status code
+     * @params array    $headers    Optional Custom headers
      * @return ResponseService
      */
     public function jsonResponse( $content, $status = ResponseService::HTTP_OK, $headers = [] )
