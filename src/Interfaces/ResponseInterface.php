@@ -15,7 +15,7 @@ namespace Interfaces;
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-interface ResponseServiceInterface
+interface ResponseInterface
 {
 
     /**

@@ -10,14 +10,14 @@
 
 namespace Services;
 
-use Interfaces\RequestServiceInterface;
+use Interfaces\RequestInterface;
 
 /**
  * An HTTP request wrapper
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class RequestService implements RequestServiceInterface
+class RequestService implements RequestInterface
 {
 
     /**

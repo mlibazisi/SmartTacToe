@@ -10,14 +10,14 @@
 
 namespace Services;
 
-use Interfaces\ResponseServiceInterface;
+use Interfaces\ResponseInterface;
 
 /**
  * An HTTP response wrapper
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ResponseService implements ResponseServiceInterface
+class ResponseService implements ResponseInterface
 {
 
     /**
