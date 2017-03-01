@@ -1,0 +1,4 @@
+homepage:
+    path: /
+    controller: Controllers\Default
+    action: index

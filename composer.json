@@ -1,0 +1,12 @@
+{
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.3.9",
+    "phpunit/phpunit": "3.7.*",
+    "symfony/yaml": "3.2.*"
+  }
+}
