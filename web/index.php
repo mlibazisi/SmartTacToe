@@ -12,6 +12,10 @@
  * This is the Front Controller that handles all requests
  */
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 define( 'WEB_ROOT', __DIR__ );
 
 require_once WEB_ROOT . '/../vendor/autoload.php';
@@ -20,7 +24,7 @@ use Services\RequestService;
 use Services\ResponseService;
 use Symfony\Component\Yaml\Yaml;
 
-$request        = new RequestService();
+$request        = RequestService::instantiateFromGlobals();
 $request_path   = $request->getPath();
 $path_map       = [];
 $routing_file   =  WEB_ROOT . '/../config/routing.yml';
@@ -43,12 +47,25 @@ if ( empty( $path_map['controller'] )
     exit( 'Improperly configured routes in : ' . $routing_file );
 }
 
+$parameters = WEB_ROOT . '/../config/parameters.yml';
+$parameters = Yaml::parse(
+    file_get_contents( $parameters )
+);
+
+require_once WEB_ROOT . '/../config/services.php';
+
 try {
 
-    $controller = $path_map['controller'] . 'Controller';
-    $action     = $path_map['action'] . 'Action';
-    $response   = call_user_func_array( [
-        new $controller,
+    $controller     = $path_map['controller'] . 'Controller';
+    $action         = $path_map['action'] . 'Action';
+    $controller_obj = new $controller;
+
+    $controller_obj
+        ->setParameters( (array)$parameters )
+        ->setContainer( $container );
+
+    $response = call_user_func_array( [
+        $controller_obj,
         $action
     ],
         [ $request ]

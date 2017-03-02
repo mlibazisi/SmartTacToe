@@ -8,20 +8,13 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Constants;
+namespace Exceptions;
 
 /**
- * Defines service names
+ * The Configuration exception handler
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ServiceConstants
+class ConfigurationException extends \Exception
 {
-
-    const LOG           = 'log';
-    const REQUEST       = 'request';
-    const RESPONSE      = 'response';
-    const HTTP_CLIENT   = 'http_client';
-    const OAUTH         = 'o_auth';
-
 }

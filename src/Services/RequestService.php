@@ -11,6 +11,7 @@
 namespace Services;
 
 use Interfaces\RequestInterface;
+use Interfaces\RequestServiceInterface;
 
 /**
  * An HTTP request wrapper

@@ -87,10 +87,11 @@ class HttpClientService implements HttpClientInterface
      * Submit a GET http request
      *
      * @param string $url The url to get
+     * @param array     $headers    Optional headers
      *
      * @return mixed
      */
-    public function get( $url )
+    public function get( $url, array $headers = [] )
     {
 
         $this->init( $url );
@@ -99,6 +100,7 @@ class HttpClientService implements HttpClientInterface
             $this->setOption( CURLOPT_URL, $url );
         }
 
+        $this->setOption( CURLOPT_HTTPHEADER, $headers );
         $this->setOption( CURLOPT_RETURNTRANSFER, 1 );
         $this->setOption( CURLOPT_CONNECTTIMEOUT,
             self::CONNECTION_TIMEOUT );

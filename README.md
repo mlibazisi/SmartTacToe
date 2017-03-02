@@ -1,3 +1,3 @@
 # Slackable
 
-An optimal-play aware tic-tac-toe game for Slack.
+A stateless, optimal-play aware, tic-tac-toe Slack App.

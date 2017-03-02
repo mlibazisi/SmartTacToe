@@ -11,17 +11,16 @@
 namespace Constants;
 
 /**
- * Defines service names
+ * Defines configuration paths
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ServiceConstants
+class ConfigConstants
 {
 
-    const LOG           = 'log';
-    const REQUEST       = 'request';
-    const RESPONSE      = 'response';
-    const HTTP_CLIENT   = 'http_client';
-    const OAUTH         = 'o_auth';
+    const SLACK_API         = 'slack_api';
+    const OAUTH_ACCESS_URL  = 'slack_api.oauth_access_url';
+    const CLIENT_ID         = 'slack_api.client_id';
+    const CLIENT_SECRET     = 'slack_api.client_secret';
 
 }

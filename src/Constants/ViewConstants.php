@@ -11,17 +11,15 @@
 namespace Constants;
 
 /**
- * Defines service names
+ * Defines view paths
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ServiceConstants
+class ViewConstants
 {
 
-    const LOG           = 'log';
-    const REQUEST       = 'request';
-    const RESPONSE      = 'response';
-    const HTTP_CLIENT   = 'http_client';
-    const OAUTH         = 'o_auth';
+    const OAUTH         = 'views/pages/oauth/index.html.php';
+    const LAYOUT        = 'views/layouts/default.html.php';
+    const OAUTH_ERROR   = 'views/pages/oauth/error.html.php';
 
 }

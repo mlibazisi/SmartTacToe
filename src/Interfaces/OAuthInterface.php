@@ -8,20 +8,24 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Constants;
+namespace Interfaces;
+use Exceptions\ServiceException;
 
 /**
- * Defines service names
+ * The interface for our OAuth services
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ServiceConstants
+interface OAuthInterface
 {
 
-    const LOG           = 'log';
-    const REQUEST       = 'request';
-    const RESPONSE      = 'response';
-    const HTTP_CLIENT   = 'http_client';
-    const OAUTH         = 'o_auth';
+    /**
+     * Request an access token from an OAuth server
+     *
+     * @param string $access_url The url to submit the request
+     * @return mixed
+     * @throws ServiceException
+     */
+    public function getAccessToken( $access_url );
 
 }

@@ -2,3 +2,7 @@ homepage:
     path: /
     controller: Controllers\Default
     action: index
+authenticate:
+    path: /auth
+    controller: Controllers\Auth
+    action: index

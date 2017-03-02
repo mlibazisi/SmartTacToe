@@ -4,3 +4,4 @@
 !temp/logs/.keep
 /vendor/*
 !vendor/.keep
+/config/parameters.yml

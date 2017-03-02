@@ -10,6 +10,11 @@
 
 use Services\ResponseService;
 use Exceptions\ServiceException;
+use Exceptions\ControllerException;
+use Constants\ServiceConstants;
+use Exceptions\ConfigurationException;
+use Constants\ViewConstants;
+use Services\ContainerService;
 
 /**
  * The controller base class
@@ -22,46 +27,175 @@ use Exceptions\ServiceException;
 abstract class Controller
 {
 
-    private static $registry;
+    /**
+     * Service container
+     *
+     * @var ContainerService
+     */
+    private $_container;
 
     /**
-     * Instantiate a service
+     * Configured parameters
      *
-     * @param string    $service    The service name
-     * @param array     $args       The service arguments
-     * @return mixed
-     * @throws ServiceException
+     * @var array
      */
-    public function get( $service, array $args = []  )
+    private $_parameters;
+
+    /**
+     * Sets the service container
+     *
+     * @param ContainerService $container The container
+     * @return $this
+     */
+    public function setContainer( ContainerService $container ) {
+
+        $this->_container = $container;
+
+        return $this;
+
+    }
+
+    /**
+     * Set parameters from the configuration directory
+     *
+     * @param array $parameters Configuration parameters
+     * @return $this
+     */
+    public function setParameters( array $parameters )
     {
 
-        if ( !isset( self::$registry[ $service ] ) ) {
+        $this->_parameters = $parameters;
 
-            $class = 'Services\\' . $service . 'Service';
+        return $this;
 
-            if ( $args ) {
+    }
 
-                try {
+    /**
+     * Set parameters from the configuration directory
+     *
+     * @param string $key Name of the parameter
+     * @return mixed Returns string if key is specified, else array
+     * @throws ConfigurationException
+     */
+    public function getParameters( $key = NULL )
+    {
 
-                    $instance                   = new ReflectionClass( $class );
-                    self::$registry[ $service ] =  $instance->newInstanceArgs( $args );
+        if ( !$key ) {
+            return $this->_parameters;
+        }
 
-                } catch ( Exception $e ) {
+        if ( strpos( $key, '.' ) ) {
 
-                    $message    = 'Failed to load service ' . $class;
-                    $logger     = new \Services\LogService();
-                    $logger->log( $message );
+            list( $outer_key, $inner_key ) = explode( '.', $key, 2 );
 
-                    throw new ServiceException( $e->getMessage() );
-                }
+            if ( !isset( $this->_parameters[ $outer_key ][ $inner_key ] ) ) {
 
-            } else {
-                self::$registry[ $service ] = new $class;
+                $message    = 'Controller::getParameters Parameter not set: ' . $key;
+                $logger     = $this->get( ServiceConstants::LOG );
+                $logger->log( $message );
+                throw new ConfigurationException( $message );
+
             }
+
+            return $this->_parameters[ $outer_key ][ $inner_key ];
 
         }
 
-        return self::$registry[ $service ];
+        if ( !isset( $this->_parameters[ $key ] ) ) {
+
+            $message    = 'Controller::getParameters Parameter not set: ' . $key;
+            $logger     = $this->get( ServiceConstants::LOG );
+            $logger->log( $message );
+            throw new ConfigurationException( $message );
+
+        }
+
+        return $this->_parameters[ $key ];
+
+    }
+
+    /**
+     * Renders a complete view
+     *
+     * Renders a view with corresponding
+     * HTML header and body tags
+     *
+     * @param string    $page   The path to the page view
+     * @param array     $vars   Variables to be accessed in the view
+     * @return string   The rendered page
+     * @throws ControllerException
+     */
+    public function render( $page, array $vars = [] )
+    {
+
+        $html_body = $this->element( $page, $vars );
+
+        return $this->element( ViewConstants::LAYOUT, [
+            '__LAYOUT_BODY__' => $html_body
+        ] );
+
+    }
+
+    /**
+     * Render a partial view
+     *
+     * Renders a view without appending the
+     * HTML header and body tags
+     *
+     * @param string    $element   The path to the view
+     * @param array     $vars       Variables to be accessed in the element
+     * @return string   The rendered element
+     * @throws ControllerException
+     */
+    public function element( $element, array $vars = [] )
+    {
+
+        $file = realpath( WEB_ROOT . '/../' . ltrim( $element, '/' ) );
+
+        if ( !file_exists( $file ) ) {
+
+            $message    = 'Controller::element could not find file: ' . $file;
+            $logger     = $this->get( \Constants\ServiceConstants::LOG );
+            $logger->log( $message );
+            throw new ControllerException( $message );
+
+        }
+
+        if ( $vars ) {
+            extract( $vars, EXTR_SKIP );
+        }
+
+        ob_start();
+
+        require $file;
+
+        return ob_get_clean();
+
+    }
+
+    /**
+     * Instantiates a service
+     *
+     * @param string $service The service name
+     * @return mixed
+     * @throws ServiceException
+     */
+    public function get( $service  )
+    {
+
+        try {
+
+            return $this->_container->get( $service );
+
+        } catch ( ServiceException $e ) {
+
+            $message    = 'Controller::get failed to load service ' . $service;
+            $logger     = new \Services\LogService();
+            $logger->log( $message );
+
+            throw new ServiceException( 'Controller::get Service not found: ' . $service );
+
+        }
 
     }
 
