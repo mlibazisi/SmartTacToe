@@ -152,7 +152,7 @@ abstract class Controller
 
         $file = realpath( WEB_ROOT . '/../' . ltrim( $element, '/' ) );
 
-        if ( !file_exists( $file ) ) {
+        if ( !$file ) {
 
             $message    = 'Controller::element could not find file: ' . $file;
             $logger     = $this->get( \Constants\ServiceConstants::LOG );
@@ -228,16 +228,6 @@ abstract class Controller
         $headers = array_merge( $headers, [
             'Content-Type' => 'application/json'
         ] );
-
-        $status_message = ( $status >= ResponseService::HTTP_OK
-            && $status < ResponseService::HTTP_BAD_REQUEST )
-            ? ResponseService::SUCCESS_MESSAGE
-            : ResponseService::ERROR_MESSAGE;
-
-        $content = [
-            'status'    => $status_message,
-            'data'      => $content
-        ];
 
         return $this->response( json_encode( $content ), $status, $headers );
 

@@ -33,4 +33,8 @@ $services['o_auth'] = function ( $c ) {
   return new Services\OAuthService( $c );
 };
 
+$services['game_server'] = function () {
+  return new Services\GameService();
+};
+
 $container = new \Services\ContainerService( $services );

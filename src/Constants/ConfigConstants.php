@@ -22,5 +22,7 @@ class ConfigConstants
     const OAUTH_ACCESS_URL  = 'slack_api.oauth_access_url';
     const CLIENT_ID         = 'slack_api.client_id';
     const CLIENT_SECRET     = 'slack_api.client_secret';
+    const TOKEN             = 'slack_api.token';
+    const SLACK_COMMAND     = 'slack_api.command';
 
 }

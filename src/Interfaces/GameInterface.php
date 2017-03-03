@@ -8,21 +8,21 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Constants;
+namespace Interfaces;
 
 /**
- * Defines service names
+ * The game server interface
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ServiceConstants
+interface GameInterface
 {
 
-    const LOG           = 'log';
-    const REQUEST       = 'request';
-    const RESPONSE      = 'response';
-    const HTTP_CLIENT   = 'http_client';
-    const OAUTH         = 'o_auth';
-    const GAME_SERVER   = 'game_server';
+    /**
+     * Gets help options to the user
+     *
+     * @return  array
+     */
+    public function help();
 
 }

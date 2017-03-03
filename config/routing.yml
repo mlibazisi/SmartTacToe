@@ -6,3 +6,7 @@ authenticate:
     path: /auth
     controller: Controllers\Auth
     action: index
+slash_command:
+    path: /command
+    controller: Controllers\SlashCommand
+    action: index

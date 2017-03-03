@@ -8,21 +8,31 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Constants;
+namespace Services;
+
+use Interfaces\GameInterface;
 
 /**
- * Defines service names
+ * The game server
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ServiceConstants
+class GameService implements GameInterface
 {
 
-    const LOG           = 'log';
-    const REQUEST       = 'request';
-    const RESPONSE      = 'response';
-    const HTTP_CLIENT   = 'http_client';
-    const OAUTH         = 'o_auth';
-    const GAME_SERVER   = 'game_server';
+    /**
+     * Gets help options to the user
+     *
+     * @return  array
+     */
+    public function help()
+    {
+
+        return [
+            "response_type" => 'ephemeral',
+            "mrkdwn"        => true
+        ];
+
+    }
 
 }

@@ -82,4 +82,6 @@ try {
 
 }
 
-$response->send();
+if ( $response instanceof ResponseService ) {
+    $response->send();
+}
