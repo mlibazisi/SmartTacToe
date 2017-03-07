@@ -8,16 +8,21 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Constants;
+namespace Tests\Services;
 
-/**
- * Defines Slack API response message constants
- *
- * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
- */
-class MessageConstants
+use Constants\HelperConstants;
+
+class HelperConstantsTest extends \PHPUnit_Framework_TestCase
 {
 
-    const EPHEMERAL = 'ephemeral';
+    /**
+     * @test
+     */
+    public function testFunctionHelperConstant()
+    {
+
+        $this->assertEquals( 'function_helper', HelperConstants::HELPER_FUNCTIONS );
+
+    }
 
 }

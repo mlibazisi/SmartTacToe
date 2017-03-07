@@ -1072,7 +1072,7 @@ class GameService implements GameInterface
 
         return [
             'text'              => $text,
-            'response_type'     => MessageConstants::EPHEMERAL,
+            'response_type'     => 'ephemeral',
             'replace_original'  => $replace_original,
             'mrkdwn'            => TRUE
         ];
