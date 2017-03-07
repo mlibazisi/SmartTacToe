@@ -64,7 +64,7 @@ class LogService implements LogInterface
         $functions = $this->_container
             ->get( HelperConstants::HELPER_FUNCTIONS );
 
-        $functions->errorLog( $message . "\n", 3, $this->_log );
+        $functions->errorLog( $message, 3, $this->_log );
 
     }
 
