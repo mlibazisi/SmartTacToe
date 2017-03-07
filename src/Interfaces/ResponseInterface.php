@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -19,18 +19,10 @@ interface ResponseInterface
 {
 
     /**
-     * The constructor
-     *
-     * @param string    $content The HTTP response body
-     * @param int       $status_code The HTTP response status code
-     * @param array     $headers The response headers
-     */
-    public function __construct( $content = '', $status_code = 200, $headers = [] );
-
-    /**
-     * Set custom HTTP header => value pairs
+     * Set custom HTTP [ header => value ] pairs
      *
      * @param array $headers An array of custom headers
+     *
      * @return void
      */
     public function setHeaders( array $headers );
@@ -46,6 +38,7 @@ interface ResponseInterface
      * Set the http response budy
      *
      * @param string $content The body
+     *
      * @return void
      */
     public function setContent( $content );
@@ -60,7 +53,8 @@ interface ResponseInterface
     /**
      * Set the http status code
      *
-     * @param int $status_code The body
+     * @param int $status_code The HTTP status code
+     *
      * @return void
      */
     public function setStatusCode( $status_code );
@@ -73,7 +67,7 @@ interface ResponseInterface
     public function getStatusCode();
 
     /**
-     * Sends the http response to the browser/client
+     * Sends the http response to the requester
      *
      * @return void
      */

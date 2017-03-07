@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -10,10 +10,11 @@
 
 namespace Services;
 
+use Exceptions\ConfigurationException;
 use Exceptions\ServiceException;
 
 /**
- * Acts as a service registry
+ * Dependency Injection Container
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
@@ -28,13 +29,22 @@ class ContainerService implements \ArrayAccess
     protected $_services = [];
 
     /**
+     * Configuration parameters
+     *
+     * @var array
+     */
+    protected $_parameters = [];
+
+    /**
      * Load the service container
      *
-     * @param array $services The services
+     * @param array $services   The services
+     * @param array $parameters The configured parameters
      */
-    public function __construct( array $services = [] )
+    public function __construct( array $services = [], array $parameters = [] )
     {
-        $this->_services = $services;
+        $this->_services    = $services;
+        $this->_parameters  = $parameters;
 
     }
 
@@ -43,6 +53,7 @@ class ContainerService implements \ArrayAccess
      *
      * @param string    $key     The service identifier
      * @param \Closure  $service The service
+     *
      * @return void
      */
     public function offsetSet( $key, $service )
@@ -54,6 +65,7 @@ class ContainerService implements \ArrayAccess
      * Set the service
      *
      * @param   string $service The service identifier
+     *
      * @return  \Closure
      * @throws  ServiceException
      */
@@ -65,7 +77,8 @@ class ContainerService implements \ArrayAccess
             return $this->_services[ $service ]( $this );
         }
 
-        throw new ServiceException( 'ContainerService::offsetGet Service not found' );
+        $message = 'ContainerService::offsetGet failed to load service ' . $service;
+        throw new ServiceException( $message );
 
     }
 
@@ -73,6 +86,7 @@ class ContainerService implements \ArrayAccess
      * Check if a service exists
      *
      * @param   string $service The service identifier
+     *
      * @return  bool
      */
     public function offsetExists( $service )
@@ -84,6 +98,7 @@ class ContainerService implements \ArrayAccess
      * Removes a service from the registry
      *
      * @param   string $service The service identifier
+     *
      * @return  void
      */
     public function offsetUnset( $service )
@@ -97,6 +112,7 @@ class ContainerService implements \ArrayAccess
      * Invokes a service
      *
      * @param string $service The service name
+     *
      * @return mixed
      */
     public function get( $service  )
@@ -107,10 +123,43 @@ class ContainerService implements \ArrayAccess
     }
 
     /**
+     * Get a configured value from parameters.yml
+     *
+     * @param   string $key The sname of the parameter
+     *
+     * @return  string
+     * @throws ConfigurationException
+     */
+    public function getParameter( $key  )
+    {
+
+        if ( strpos( $key, '.' ) ) {
+
+            list( $outer_key, $inner_key ) = explode( '.', $key, 2 );
+
+            if ( !isset( $this->_parameters[ $outer_key ][ $inner_key ] ) ) {
+                $message = 'ContainerService::getParameters Parameter not set: ' . $key;
+                throw new ConfigurationException( $message );
+            }
+
+            return $this->_parameters[ $outer_key ][ $inner_key ];
+
+        }
+
+        if ( !isset( $this->_parameters[ $key ] ) ) {
+            $message = 'ContainerService::getParameters Parameter not set: ' . $key;
+            throw new ConfigurationException( $message );
+        }
+
+        return $this->_parameters[ $key ];
+    }
+
+    /**
      * Set the service
      *
      * @param string    $key     The service identifier
-     * @param \Closure    $service The service
+     * @param \Closure  $service The service
+     *
      * @return void
      */
     public function set( $key, $service )

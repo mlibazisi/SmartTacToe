@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -10,6 +10,7 @@
 
 namespace Services;
 
+use Constants\HelperConstants;
 use Interfaces\ResponseInterface;
 
 /**
@@ -41,33 +42,42 @@ class ResponseService implements ResponseInterface
     /**
      * HTTP body
      *
-     * @var array
+     * @var string
      */
     protected $_content;
 
     /**
      * HTTP status code
      *
-     * @var array
+     * @var int
      */
     protected $_status_code;
 
     const SUCCESS_MESSAGE               = 'success';
     const ERROR_MESSAGE                 = 'error';
-
     const HTTP_OK                       = 200;
     const HTTP_BAD_REQUEST              = 400;
     const HTTP_INTERNAL_SERVER_ERROR    = 500;
 
     /**
+     * Service and parameter container
+     *
+     * @var ContainerService
+     */
+    protected $_container;
+
+    /**
      * The constructor
      *
-     * @param string    $content        The HTTP response body
-     * @param int       $status_code    The HTTP response status code
-     * @param array     $headers        The responss headers
+     * @param ContainerService  $container      Dependency injection container
+     * @param string            $content        The HTTP response body
+     * @param int               $status_code    The HTTP response status code
+     * @param array             $headers        The response headers
      */
-    public function __construct( $content = '', $status_code = self::HTTP_OK, $headers = [] )
+    public function __construct( ContainerService $container, $content = '', $status_code = self::HTTP_OK, $headers = [] )
     {
+
+        $this->_container = $container;
 
         $this->setHeaders( $headers );
         $this->setContent( $content );
@@ -76,9 +86,10 @@ class ResponseService implements ResponseInterface
     }
 
     /**
-     * Set custom HTTP header => value pairs
+     * Set custom HTTP [ header => value ] pairs
      *
      * @param array $headers An array of custom headers
+     *
      * @return void
      */
     public function setHeaders( array $headers )
@@ -108,6 +119,7 @@ class ResponseService implements ResponseInterface
      * Set the http response budy
      *
      * @param string $content The body
+     *
      * @return void
      */
     public function setContent( $content )
@@ -132,7 +144,8 @@ class ResponseService implements ResponseInterface
     /**
      * Set the http status code
      *
-     * @param int $status_code The body
+     * @param int $status_code The HTTP status code
+     *
      * @return void
      */
     public function setStatusCode( $status_code )
@@ -155,29 +168,46 @@ class ResponseService implements ResponseInterface
     }
 
     /**
-     * Sends the http response to the browser/client
+     * Sends the http response to the requester
      *
      * @return void
      */
     public function send()
     {
 
-        if ( !headers_sent() ) {
+        $functions = $this->_container
+            ->get( HelperConstants::HELPER_FUNCTIONS );
+
+        if ( !$functions->headersSent() ) {
 
             foreach ( $this->_headers as $name => $value ) {
-                header( "{$name}: {$value}", false, $this->_status_code );
+                $functions->header( "{$name}: {$value}", false, $this->_status_code );
             }
 
         }
 
-        echo $this->_content;
+        $this->_echo( $this->_content );
 
-        if (function_exists( 'fastcgi_finish_request') ) {
-
-            fastcgi_finish_request();
-
+        if ( $functions->functionExists( 'fastcgi_finish_request' ) ) {
+            $functions->fastcgiFinishRequest();
         } elseif ( PHP_SAPI != 'cli' ) {
-                ob_end_flush();
+            $functions->obEndFlush();
+        }
+
+    }
+
+    /**
+     * Print a string
+     *
+     * @param string $string The string the print
+     *
+     * @return void
+     */
+    private function _echo( $string = '' )
+    {
+
+        if ( $string ) {
+            echo $string;
         }
 
     }

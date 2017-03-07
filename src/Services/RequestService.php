@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -11,7 +11,6 @@
 namespace Services;
 
 use Interfaces\RequestInterface;
-use Interfaces\RequestServiceInterface;
 
 /**
  * An HTTP request wrapper
@@ -80,6 +79,7 @@ class RequestService implements RequestInterface
      * otherwise it returns the $_GET parameter specified by $key
      *
      * @param   string $key The name of the GET parameter
+     *
      * @return  mixed Array of all parameters, or string
      */
     public function query( $key = NULL )
@@ -102,6 +102,7 @@ class RequestService implements RequestInterface
      * otherwise it returns the $_POST parameter specified by $key
      *
      * @param   string $key The name of the POST parameter
+     *
      * @return  mixed Array of all parameters, or string
      */
     public function data( $key = NULL )
@@ -137,6 +138,7 @@ class RequestService implements RequestInterface
      * Set the URI path
      *
      * @param   string $path The path
+     *
      * @return  void
      */
     public function setPath( $path )
@@ -149,7 +151,8 @@ class RequestService implements RequestInterface
     /**
      * Set the POST data
      *
-     * @param   array $data The POST data
+     * @param array $data The POST data
+     *
      * @return  void
      */
     public function setData( array $data )
@@ -162,7 +165,8 @@ class RequestService implements RequestInterface
     /**
      * Set the GET data
      *
-     * @param   array $query The GET data
+     * @param array $query The GET data
+     *
      * @return  void
      */
     public function setQuery( array $query )

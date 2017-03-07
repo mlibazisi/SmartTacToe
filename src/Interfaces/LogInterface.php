@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -21,12 +21,16 @@ interface LogInterface
     /**
      * Logs an error
      *
+     * @param string $message The message to log
+     *
      * @return void
      */
     public function log( $message );
 
     /**
      * Sets the log file path
+     *
+     * @param string $file The error log file path
      *
      * @return void
      */

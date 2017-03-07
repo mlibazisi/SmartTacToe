@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package.
+ * This file is part of the SmartTacToe package.
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -12,12 +12,9 @@
  * This is the Front Controller that handles all requests
  */
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 define( 'WEB_ROOT', __DIR__ );
 
+require_once WEB_ROOT . '/../config/errors.php';
 require_once WEB_ROOT . '/../vendor/autoload.php';
 
 use Services\RequestService;
@@ -44,15 +41,16 @@ foreach ( $routes as $route => $route_info ) {
 
 if ( empty( $path_map['controller'] )
 || empty( $path_map['action'] ) ) {
-    exit( 'Improperly configured routes in : ' . $routing_file );
+    throw new Exception( 'Improperly configured routes in : ' . $routing_file );
 }
 
-$parameters = WEB_ROOT . '/../config/parameters.yml';
-$parameters = Yaml::parse(
-    file_get_contents( $parameters )
+$parameters = (array)Yaml::parse(
+    file_get_contents( WEB_ROOT . '/../config/parameters.yml' )
 );
 
 require_once WEB_ROOT . '/../config/services.php';
+
+$container = new \Services\ContainerService( $services, $parameters );
 
 try {
 
@@ -60,9 +58,7 @@ try {
     $action         = $path_map['action'] . 'Action';
     $controller_obj = new $controller;
 
-    $controller_obj
-        ->setParameters( (array)$parameters )
-        ->setContainer( $container );
+    $controller_obj->setContainer( $container );
 
     $response = call_user_func_array( [
         $controller_obj,
@@ -84,4 +80,6 @@ try {
 
 if ( $response instanceof ResponseService ) {
     $response->send();
+} else if ( is_string( $response ) ) {
+    echo $response;
 }

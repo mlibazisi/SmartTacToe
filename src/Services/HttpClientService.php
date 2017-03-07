@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -10,10 +10,11 @@
 
 namespace Services;
 
+use Constants\HelperConstants;
 use Interfaces\HttpClientInterface;
 
 /**
- * An cURL based HTTP client
+ * A cURL based HTTP client
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
@@ -33,6 +34,25 @@ class HttpClientService implements HttpClientInterface
      * @var int
      */
     const CONNECTION_TIMEOUT = 5;
+
+    /**
+     * Service and parameter container
+     *
+     * @var ContainerService
+     */
+    protected $_container;
+
+    /**
+     * Instantiate HttpClientService and inject the service container
+     *
+     * @param ContainerService $container The service container
+     */
+    public function __construct( ContainerService $container )
+    {
+
+        $this->_container = $container;
+
+    }
 
     /**
      * Submit a POST http request
@@ -68,25 +88,34 @@ class HttpClientService implements HttpClientInterface
      * @param array     $data       The data to post
      * @param array     $headers    Optional headers
      *
-     * @return mixed
+     * @return array
      */
     public function jsonPost( $url, array $data, array $headers = [] )
     {
 
-        $json_string    = json_encode( $data );
-        $headers        = array_merge( $headers, [
+        $functions = $this->_container
+            ->get( HelperConstants::HELPER_FUNCTIONS );
+
+        $json_string    = $functions->jsonEncode( $data );
+        $headers        = $functions->arrayMerge( $headers, [
             'Content-Type'      => 'application/json',
             'Content-Length'    => strlen( $json_string )
         ] );
 
-        return $this->post( $url, $json_string, $headers );
+        $response = $this->post( $url, $json_string, $headers );
+
+        if ( $response ) {
+            return $functions->jsonDecode( $response, TRUE );
+        }
+
+        return [];
 
     }
 
     /**
      * Submit a GET http request
      *
-     * @param string $url The url to get
+     * @param string    $url        The url to get
      * @param array     $headers    Optional headers
      *
      * @return mixed
@@ -96,20 +125,17 @@ class HttpClientService implements HttpClientInterface
 
         $this->init( $url );
 
-        if ( $url ) {
-            $this->setOption( CURLOPT_URL, $url );
-        }
+        $this->setOption( CURLOPT_CRLF, TRUE );
+        $this->setOption( CURLOPT_RETURNTRANSFER, TRUE );
 
-        $this->setOption( CURLOPT_HTTPHEADER, $headers );
-        $this->setOption( CURLOPT_RETURNTRANSFER, 1 );
-        $this->setOption( CURLOPT_CONNECTTIMEOUT,
-            self::CONNECTION_TIMEOUT );
+        if ( $headers ) {
+            $this->setOption( CURLOPT_HTTPHEADER, $headers );
+        }
 
         $response = $this->execute();
         $this->close();
 
         return $response;
-
     }
 
     /**
@@ -117,6 +143,7 @@ class HttpClientService implements HttpClientInterface
      *
      * @param string    $name   The option name
      * @param mixed     $value  The option value
+     *
      * @return bool true on success , false on failure
      */
     public function setOption( $name, $value )
@@ -167,10 +194,12 @@ class HttpClientService implements HttpClientInterface
      *
      * @return void
      */
-    public function init( $url )
+    public function init( $url  = '')
     {
 
-        $this->_handle = curl_init( $url );
+        $this->_handle = ( $url )
+            ? curl_init( $url )
+            : curl_init();
 
     }
 

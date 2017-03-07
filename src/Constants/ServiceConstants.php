@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -24,5 +24,7 @@ class ServiceConstants
     const HTTP_CLIENT   = 'http_client';
     const OAUTH         = 'o_auth';
     const GAME_SERVER   = 'game_server';
+    const SEARCH        = 'search';
+    const OPTIMAL_PLAY  = 'optimal_play';
 
 }

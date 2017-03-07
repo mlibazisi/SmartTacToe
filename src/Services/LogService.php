@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -10,6 +10,7 @@
 
 namespace Services;
 
+use Constants\HelperConstants;
 use Interfaces\LogInterface;
 
 /**
@@ -28,14 +29,28 @@ class LogService implements LogInterface
     protected $_log;
 
     /**
-     * The log file
+     * Service and parameter container
      *
-     * @var string
+     * @var ContainerService
      */
-    const DEFAULT_LOG_FILE = 'temp/logs/errors.log';
+    protected $_container;
+
+    /**
+     * Instantiate LogService and inject the service container
+     *
+     * @param ContainerService $container The service container
+     */
+    public function __construct( ContainerService $container )
+    {
+
+        $this->_container = $container;
+
+    }
 
     /**
      * Logs an error
+     *
+     * @param string $message The message to log
      *
      * @return void
      */
@@ -43,15 +58,20 @@ class LogService implements LogInterface
     {
 
         if ( !$this->_log ) {
-            $this->_log = WEB_ROOT . '/../' . self::DEFAULT_LOG_FILE;
+            $this->_log = ERROR_LOG;
         }
 
-        error_log( $message . "\n", 3, $this->_log );
+        $functions = $this->_container
+            ->get( HelperConstants::HELPER_FUNCTIONS );
+
+        $functions->errorLog( $message . "\n", 3, $this->_log );
 
     }
 
     /**
      * Sets the log file path
+     *
+     * @param string $file The error log file path
      *
      * @return void
      */

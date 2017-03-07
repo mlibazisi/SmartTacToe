@@ -11,10 +11,10 @@
 namespace Exceptions;
 
 /**
- * The Controller exception handler
+ * Handler for API related exceptions
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ControllerException extends \Exception
+class ApiException extends \Exception
 {
 }

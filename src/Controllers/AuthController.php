@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -82,14 +82,15 @@ class AuthController extends \Controller
     /**
      * Get the url to request the access token
      *
-     * @param string $code THe code to exchange for an access token
+     * @param string $code The code to exchange for an access token
+     *
      * @return string
      */
     private function _getAccessUrl( $code ) {
 
-        $access_url     = $this->getParameters( ConfigConstants::OAUTH_ACCESS_URL );
-        $client_id      = $this->getParameters( ConfigConstants::CLIENT_ID );
-        $client_secret  = $this->getParameters( ConfigConstants::CLIENT_SECRET );
+        $access_url     = $this->getParameter( ConfigConstants::OAUTH_ACCESS_URL );
+        $client_id      = $this->getParameter( ConfigConstants::CLIENT_ID );
+        $client_secret  = $this->getParameter( ConfigConstants::CLIENT_SECRET );
 
         return sprintf( $access_url, $client_id, $client_secret, $code );
 

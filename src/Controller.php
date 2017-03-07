@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -12,7 +12,6 @@ use Services\ResponseService;
 use Exceptions\ServiceException;
 use Exceptions\ControllerException;
 use Constants\ServiceConstants;
-use Exceptions\ConfigurationException;
 use Constants\ViewConstants;
 use Services\ContainerService;
 
@@ -28,89 +27,36 @@ abstract class Controller
 {
 
     /**
-     * Service container
+     * Service and parameter container
      *
      * @var ContainerService
      */
     private $_container;
 
     /**
-     * Configured parameters
-     *
-     * @var array
-     */
-    private $_parameters;
-
-    /**
      * Sets the service container
      *
      * @param ContainerService $container The container
-     * @return $this
+     * @return void
      */
     public function setContainer( ContainerService $container ) {
 
         $this->_container = $container;
 
-        return $this;
-
     }
 
     /**
-     * Set parameters from the configuration directory
-     *
-     * @param array $parameters Configuration parameters
-     * @return $this
-     */
-    public function setParameters( array $parameters )
-    {
-
-        $this->_parameters = $parameters;
-
-        return $this;
-
-    }
-
-    /**
-     * Set parameters from the configuration directory
+     * Get parameter from the configuration directory
      *
      * @param string $key Name of the parameter
-     * @return mixed Returns string if key is specified, else array
-     * @throws ConfigurationException
+     *
+     * @return mixed
      */
-    public function getParameters( $key = NULL )
+    public function getParameter( $key = NULL )
     {
 
-        if ( !$key ) {
-            return $this->_parameters;
-        }
-
-        if ( strpos( $key, '.' ) ) {
-
-            list( $outer_key, $inner_key ) = explode( '.', $key, 2 );
-
-            if ( !isset( $this->_parameters[ $outer_key ][ $inner_key ] ) ) {
-
-                $message    = 'Controller::getParameters Parameter not set: ' . $key;
-                $logger     = $this->get( ServiceConstants::LOG );
-                $logger->log( $message );
-                throw new ConfigurationException( $message );
-
-            }
-
-            return $this->_parameters[ $outer_key ][ $inner_key ];
-
-        }
-
-        if ( !isset( $this->_parameters[ $key ] ) ) {
-
-            $message    = 'Controller::getParameters Parameter not set: ' . $key;
-            $logger     = $this->get( ServiceConstants::LOG );
-            $logger->log( $message );
-            throw new ConfigurationException( $message );
-
-        }
-
-        return $this->_parameters[ $key ];
+        return $this->_container
+            ->getParameter( $key );
 
     }
 
@@ -137,7 +83,7 @@ abstract class Controller
     }
 
     /**
-     * Render a partial view
+     * Renders a partial view
      *
      * Renders a view without appending the
      * HTML header and body tags
@@ -174,7 +120,7 @@ abstract class Controller
     }
 
     /**
-     * Instantiates a service
+     * Get a lazy loaded service from the dependency injector
      *
      * @param string $service The service name
      * @return mixed
@@ -190,7 +136,7 @@ abstract class Controller
         } catch ( ServiceException $e ) {
 
             $message    = 'Controller::get failed to load service ' . $service;
-            $logger     = new \Services\LogService();
+            $logger     = new \Services\LogService( $this->_container );
             $logger->log( $message );
 
             throw new ServiceException( 'Controller::get Service not found: ' . $service );
@@ -210,7 +156,7 @@ abstract class Controller
     public function response( $content, $status = ResponseService::HTTP_OK, $headers = [] )
     {
 
-        return new ResponseService( $content, $status, $headers );
+        return new ResponseService( $this->_container, $content, $status, $headers );
 
     }
 
@@ -233,5 +179,39 @@ abstract class Controller
 
     }
 
+    /**
+     * Extracts the id and username from a handle
+     *
+     * @param string $handle Opponent's handle < @ id | name } >
+     * @return array The extracted id and username
+     */
+    protected function _extractUserFromHandle( $handle ) {
+
+        $parts = explode( '|', trim( $handle ), 2 );
+
+        if ( empty( $parts[1] ) ) {
+            return [];
+        }
+
+        return [
+            'id'   => ltrim( $parts[0], '<@' ),
+            'name' => rtrim( $parts[1], '>' )
+        ];
+
+    }
+
+    /**
+     * Sends an error message to the user
+     *
+     * @param string    $error_message      The error message
+     * @param bool      $replace_original   Replaces original message if set to true
+     * @return array Returns the error response
+     */
+    protected function _error( $error_message, $replace_original = FALSE ) {
+
+        return $this->get( ServiceConstants::GAME_SERVER )
+            ->error( $error_message, $replace_original );
+
+    }
 
 }

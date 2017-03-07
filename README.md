@@ -1,3 +1,3 @@
-# Slackable
+# SmartTacToe
 
-A stateless, optimal-play aware, tic-tac-toe Slack App.
+SmartTacToe: A stateless, quasi-sentient, optimal-play predictive m,n,k-game for Slack

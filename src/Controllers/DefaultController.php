@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -24,9 +24,7 @@ class DefaultController extends \Controller
 {
 
     /**
-     * Temporary landing page
-     *
-     * This is a placeholder for my controller
+     * Dummy main landing page
      *
      * @param Request $request The HTTP request object
      * @return ResponseService

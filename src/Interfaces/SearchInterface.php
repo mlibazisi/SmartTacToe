@@ -9,23 +9,24 @@
  */
 
 namespace Interfaces;
-use Exceptions\ServiceException;
 
 /**
- * The interface for our OAuth services
+ * The interface for searching for the Slack API
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-interface OAuthInterface
+interface SearchInterface
 {
 
     /**
-     * Request an access token from an OAuth server
+     * Performs a message search against the SLACK API
      *
-     * @param string $access_url The url to submit the request
-     * @return mixed
-     * @throws ServiceException
+     * @param string    $channel    The channel name to search
+     * @param string    $text       The text to search for
+     * @param int       $limit      The result set limit
+     *
+     * @return array The result set
      */
-    public function getAccessToken( $access_url );
+    public function find( $channel, $text, $limit = 20 );
 
 }

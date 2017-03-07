@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -9,32 +9,42 @@
  */
 
 /**
- * Service configuration
+ * Service Injection Container configuration
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-$services['log'] = function () {
-  return new Services\LogService();
+$services['log'] = function ( $c ) {
+  return new Services\LogService( $c );
 };
 
 $services['request'] = function () {
   return new Services\RequestService();
 };
 
-$services['response'] = function () {
-  return new Services\ResponseService();
+$services['response'] = function ( $c ) {
+  return new Services\ResponseService( $c );
 };
 
-$services['http_client'] = function () {
-  return new Services\HttpClientService();
+$services['http_client'] = function ( $c ) {
+  return new Services\HttpClientService( $c );
 };
 
 $services['o_auth'] = function ( $c ) {
   return new Services\OAuthService( $c );
 };
 
-$services['game_server'] = function () {
-  return new Services\GameService();
+$services['function_helper'] = function () {
+  return new Helpers\FunctionHelper();
 };
 
-$container = new \Services\ContainerService( $services );
+$services['game_server'] = function ( $c ) {
+  return new Services\GameService( $c );
+};
+
+$services['optimal_play'] = function () {
+  return new Services\OptimalPlayService();
+};
+
+$services['search'] = function ( $c ) {
+  return new Services\SearchService( $c );
+};

@@ -8,13 +8,16 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Exceptions;
+namespace Constants;
 
 /**
- * The Controller exception handler
+ * Defines helper names
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ControllerException extends \Exception
+class HelperConstants
 {
+
+    const HELPER_FUNCTIONS = 'function_helper';
+
 }

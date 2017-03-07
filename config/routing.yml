@@ -10,3 +10,7 @@ slash_command:
     path: /command
     controller: Controllers\SlashCommand
     action: index
+interactive_buttons:
+    path: /interact
+    controller: Controllers\InteractiveButton
+    action: index

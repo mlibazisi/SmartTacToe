@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Slackable package (https://github.com/mlibazisi/slackable)
+ * This file is part of the SmartTacToe package (https://github.com/mlibazisi/SmartTacToe)
  *
  * Copyright (c) 2017 Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  *
@@ -10,6 +10,7 @@
 
 namespace Services;
 
+use Constants\HelperConstants;
 use Constants\ServiceConstants;
 use Interfaces\OAuthInterface;
 use Exceptions\ServiceException;
@@ -44,22 +45,27 @@ class OAuthService implements OAuthInterface
     /**
      * Request an access token from an OAuth server
      *
-     * @param string    $access_url     The url to submit the request
-     * @return mixed
+     * @param string $access_url The url to submit the request
+     *
+     * @return string The token
      * @throws ServiceException
      */
     public function getAccessToken( $access_url )
     {
 
-        $http_client    = $this->_container->get( ServiceConstants::HTTP_CLIENT );
-        $response       = $http_client->get( $access_url, [
+        $response = $this->_container
+            ->get( ServiceConstants::HTTP_CLIENT )
+            ->get( $access_url, [
             'Accept' => 'application/json'
         ] );
 
-        $response = json_decode( $response, true );
+        $functions   = $this->_container
+            ->get( HelperConstants::HELPER_FUNCTIONS );
+
+        $response   = $functions->jsonDecode( $response, true );
 
         if ( empty( $response['access_token'] ) ) {
-            throw new ServiceException( 'OAuthService::loadAccessToken Failed to load access_token' );
+            throw new ServiceException( 'OAuthService::getAccessToken Failed to get access_token' );
         }
 
         return $response['access_token'];

@@ -8,13 +8,16 @@
  * LICENSE file that was distributed with this source code.
  */
 
-namespace Exceptions;
+namespace Constants;
 
 /**
- * The Controller exception handler
+ * Defines Slack API response message constants
  *
  * @author Mlibazisi Prince Mabandla <mlibazisi@gmail.com>
  */
-class ControllerException extends \Exception
+class MessageConstants
 {
+
+    const EPHEMERAL = 'ephemeral';
+
 }
