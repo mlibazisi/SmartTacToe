@@ -47,7 +47,7 @@ cd SmartTacToe
 composer install
 ```
 
-**Step 3.** Change your document root to point to SmartTacToe's web directory. *This prevents out core SmartTacToe
+**Step 3.** Change your document root to point to SmartTacToe's web directory. *This prevents the core SmartTacToe
 files from being exposed to the web*
 
  ```bash
