@@ -66,7 +66,7 @@ Don't close the file yet! We need it for step 4!
 While `default-le-ssl.conf` is still open, add the following to the bottom of it
 
 ```php
-    <Directory "/var/www/html">
+    <Directory "/var/www/SmartTacToe/web">
         AllowOverride All
     </Directory>
 ```
