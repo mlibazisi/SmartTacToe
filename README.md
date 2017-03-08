@@ -44,7 +44,7 @@ so you know where to access the following:
 
 We will come back and configure the Slack App once SmartTacToe is setup on our web server.
 
-## Installation onto a]our web server
+## Installation onto our web server
 
 Please be advised that the following tutorial assumes you're using Apache as your
 web server. You may install SmartTacToe on any webserver you like that meets the
@@ -63,7 +63,7 @@ Step 2. Change your web document root to point to SmartTacToe's web directory:
  ```
 This is because we don't want any of the App's core files to be exposed to the web! Since
 there are many variations of how document roots are configured, please use a resource like
-[google](http://google.com) or [google](http://stackoverflow.com/) if you need help with this step.
+[google](http://google.com) or [Stackoverflow](http://stackoverflow.com/) if you need help with this step.
 
 Step 3. Next, navigate to the SmartTacToe's home directory, and then
 run composer install. The SmartTacToe home directory is the
@@ -76,7 +76,7 @@ composer install
 Step 4. While still in SmartTacToe's home directory, change directory
 into the configuration directory
 
-```php
+```bash
 cd config
 ```
 
@@ -128,6 +128,7 @@ Step 1. Click on 'Interactive Messages', then enable interactive messages and en
 Step 3. Click on 'Slash Commands'. Click 'Create New Command' and enter the following:
 
 - For the Command, enter:
+
  ```bash
 /ttt
  ```
@@ -137,7 +138,8 @@ Step 3. Click on 'Slash Commands'. Click 'Create New Command' and enter the foll
 {https://replace_with_you_website.com}/command
  ```
 - Enter a short description of your choice. "SmartTacToe rocks!" is an excellent choice!
-- Check the box that says "Escape channels, users, and links sent to your app"
+
+- Check the box that says `Escape channels, users, and links sent to your app`
 
 You can then click save!
 
@@ -149,7 +151,7 @@ Step 4. Now click on 'OAuth & Permissions'
 {https://replace_with_you_website.com}/auth
  ```
 
-- For 'Permission Scopes' add commands; chat:write:bot; chat:write:user; and search:read;
+- For 'Permission Scopes' add `commands chat:write:bot chat:write:user search:read`
 
 Step 5. [add the App to slack to your team](https://get.slack.help/hc/en-us/articles/202035138-Add-an-app-to-your-team)
 
