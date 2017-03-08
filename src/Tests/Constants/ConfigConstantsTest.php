@@ -68,16 +68,6 @@ class ConfigConstantsTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testWebHookConstant()
-    {
-
-        $this->assertEquals( 'slack_api.web_hook', ConfigConstants::WEB_HOOK );
-
-    }
-
-    /**
-     * @test
-     */
     public function testAccessTokenConstant()
     {
 

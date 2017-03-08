@@ -3,8 +3,12 @@ SmartTacToe For Slack
 SmartTacToe is a stateless, quasi-sentient, optimal-play predictive m,n,k-game for [Slack](https://slack.com)
 
 - STATELESS: I deliberately chose not to use any databases, sessions, or cookies to store
-  the state of the game and players. I decided to do this because I wanted to see how far I
-  could hack the Slack API.
+  the state of the game and players. I wanted to see how far I
+  could hack the Slack API. But this came with a trade-off. Since SmartTacToe relies on the Slack Api
+  to determine the state of the game, it can sometimes miss a very recent state update because
+  of the lag time in which it takes the Slack Api to make new changes visible over Api calls. This
+  only becomes apparent when running commands like `/ttt status` on a game that has just been created. It may take a
+  few seconds for that command to "see" the newly created game.
 - OPTIMAL-PLAY PREDICTIVE: I used the [MiniMax](https://en.wikipedia.org/wiki/Minimax)
   Game Theory Algorithm to silently predict what the next best move should be. I used miniMax because quick
   research showed me that its the staple algorithm for m,n,k-game games like Tic Tac Toe.
@@ -16,7 +20,7 @@ SmartTacToe is a stateless, quasi-sentient, optimal-play predictive m,n,k-game f
   predicts as optimal, then a positive emotion is displayed by an emoji, otherwise a
   negative emotion is expressed. It's 'quasi' because it doesn't actually feel anything, but
   acts like it does.
-  HINT: When playing the game, look to the left of the game message titles and you will see the emoji responses!
+  **HINT: When playing the game, look to the left of the game message titles and you will see the emoji responses!**
 - This implementation does not use any framework. Everything (except the two Vendor packages installed via composer) has been
   coded from scratch specifically for this App.
 
@@ -46,9 +50,9 @@ We will come back and configure the Slack App once SmartTacToe is setup on our w
 
 ## Installation onto our web server
 
-Please be advised that the following tutorial assumes you're using Apache as your
+*Please be advised that the following tutorial assumes you're using Apache as your
 web server. You may install SmartTacToe on any webserver you like that meets the
-minimum requirements specified above.
+minimum requirements specified above.*
 
 Step 1. Download SmartTacToe onto your web server's document root
 
@@ -61,9 +65,9 @@ Step 2. Change your web document root to point to SmartTacToe's web directory:
  ```bash
  [old document root]/SmartTacToe/web
  ```
-This is because we don't want any of the App's core files to be exposed to the web! Since
+*This is because we don't want any of the App's core files to be exposed to the web! Since
 there are many variations of how document roots are configured, please use a resource like
-[google](http://google.com) or [Stackoverflow](http://stackoverflow.com/) if you need help with this step.
+[google](http://google.com) or [Stackoverflow](http://stackoverflow.com/) if you need help with this step.*
 
 Step 3. Next, navigate to the SmartTacToe's home directory, and then
 run composer install. The SmartTacToe home directory is the
@@ -85,18 +89,17 @@ Step 5. Create a parameters configuration file
  ```bash
 touch parameters.yml
  ```
-We create this manually because we don't want to store our parameters in a public
-place like a git repository
+*We create this manually because we don't want to store our parameters in a public
+place like a git repository*
 
 Step 6. Now open the parameters.yml file and paste the following:
 
 ```php
 slack_api:
-  oauth_access_url: 'REPLACE_ME_WITH_OAUTH_ACCESS_URL'
+  oauth_access_url: 'https://slack.com/api/oauth.access?client_id=%s&client_secret=%s&code=%s'
   client_id: 'REPLACE_ME_WITH_CLIENT_ID'
   client_secret: 'REPLACE_ME_WITH_CLIENT_SECRET'
   command: '/ttt'
-  web_hook: 'REPLACE_ME_WITH_WEBHOOK_URL'
   token: 'REPLACE_ME_VERIFICATION_TOKEN'
   access_token: 'REPLACE_ME_WITH_ACCESS_TOKEN'
   post_message_method: 'https://slack.com/api/chat.postMessage'
@@ -119,13 +122,13 @@ and enter the rest of the App's configuration values to this parameters file lat
 Go back to [Slack](https://api.slack.com/) and navigate to the settings page of your App. Then follow
 the steps bellow:
 
-Step 1. Click on 'Interactive Messages', then enable interactive messages and enter the following Request URL:
+Step 1. Click on 'Interactive Messages', then *enable interactive messages* and enter the following Request URL:
 
  ```bash
 {https://replace_with_you_website.com}/interact
  ```
 
-Step 3. Click on 'Slash Commands'. Click 'Create New Command' and enter the following:
+Step 3. Click on 'Slash Commands'. Click *Create New Command* and enter the following:
 
 - For the Command, enter:
 
@@ -139,31 +142,31 @@ Step 3. Click on 'Slash Commands'. Click 'Create New Command' and enter the foll
  ```
 - Enter a short description of your choice. "SmartTacToe rocks!" is an excellent choice!
 
-- Check the box that says `Escape channels, users, and links sent to your app`
+- Check the box that says *Escape channels, users, and links sent to your app*
 
 You can then click save!
 
 Step 4. Now click on 'OAuth & Permissions'
 
-- For the 'Redirect URLs' add
+- For the 'Redirect URLs' add and save:
 
  ```bash
 {https://replace_with_you_website.com}/auth
  ```
 
-- For 'Permission Scopes' add `commands chat:write:bot chat:write:user search:read`
+- Scroll down, and under 'Permission Scopes' add `commands chat:write:bot chat:write:user search:read`
 
-Step 5. [add the App to slack to your team](https://get.slack.help/hc/en-us/articles/202035138-Add-an-app-to-your-team)
+- Scroll up and add the app to your team.
 
 We're done configuring our App!
 
-## Configuring the Slack App on our web server
+## Configuring SmartTacToe on our web server
 
-Now go back to your config/parameters.yml and replace each of the configuration values with the appropriate value.
+Now go back to your config/parameters.yml and replace each of the remaining configuration values with the appropriate value.
 Only replace the ones with the "REPLACE_ME_*" place holder text. You will find all these
 configuration values in your [Slack App](https://api.slack.com/apps)
 
-You may now begin playing the game by going to your team on Slack, choosing any channel you want,
+You may now begin playing SmartTacToe by going to your team on Slack, choosing any channel you want,
 and typing the command:
 
  ```bash

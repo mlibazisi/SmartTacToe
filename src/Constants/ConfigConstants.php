@@ -23,7 +23,6 @@ class ConfigConstants
     const CLIENT_ID             = 'slack_api.client_id';
     const CLIENT_SECRET         = 'slack_api.client_secret';
     const TOKEN                 = 'slack_api.token';
-    const WEB_HOOK              = 'slack_api.web_hook';
     const ACCESS_TOKEN          = 'slack_api.access_token';
     const SLACK_COMMAND         = 'slack_api.command';
     const POST_MESSAGE_METHOD   = 'slack_api.post_message_method';
