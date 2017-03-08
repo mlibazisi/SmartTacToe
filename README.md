@@ -137,6 +137,7 @@ You can now click save and go to the next step!
 
 **Step 6.** Scroll down to `Permission Scopes` and enter
 - chat:write:bot
+- chat:write:user
 - search:read
 
 Then click `save changes`!
