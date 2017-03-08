@@ -149,7 +149,7 @@ class HttpClientService implements HttpClientInterface
     public function setOption( $name, $value )
     {
 
-        return curl_setopt( $this->_handle, $name, $value );
+        return \curl_setopt( $this->_handle, $name, $value );
 
     }
 
@@ -173,7 +173,7 @@ class HttpClientService implements HttpClientInterface
     public function execute()
     {
 
-        return curl_exec( $this->_handle );
+        return \curl_exec( $this->_handle );
 
     }
 
@@ -185,7 +185,7 @@ class HttpClientService implements HttpClientInterface
     public function close()
     {
 
-        curl_close( $this->_handle );
+        \curl_close( $this->_handle );
 
     }
 
@@ -198,8 +198,8 @@ class HttpClientService implements HttpClientInterface
     {
 
         $this->_handle = ( $url )
-            ? curl_init( $url )
-            : curl_init();
+            ? \curl_init( $url )
+            : \curl_init();
 
     }
 
@@ -211,7 +211,7 @@ class HttpClientService implements HttpClientInterface
     public function __destruct()
     {
 
-        if ( is_resource( $this->_handle ) ) {
+        if ( \is_resource( $this->_handle ) ) {
             $this->close();
         }
 

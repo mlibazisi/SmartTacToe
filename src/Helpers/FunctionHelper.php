@@ -27,7 +27,7 @@ class FunctionHelper
      */
     public function httpBuildQuery( array $data ) {
 
-        return http_build_query( $data );
+        return \http_build_query( $data );
 
     }
 
@@ -40,7 +40,7 @@ class FunctionHelper
      */
     public function jsonEncode( $string ) {
 
-        return json_encode( $string );
+        return \json_encode( $string );
 
     }
 
@@ -54,7 +54,7 @@ class FunctionHelper
      */
     public function jsonDecode( $string, $assoc = FALSE ) {
 
-        return json_decode( $string, $assoc );
+        return \json_decode( $string, $assoc );
 
     }
 
@@ -68,7 +68,7 @@ class FunctionHelper
      */
     public function rand( $min, $max ) {
 
-        return rand( $min, $max );
+        return \rand( $min, $max );
 
     }
 
@@ -82,7 +82,7 @@ class FunctionHelper
      */
     public function arrayMerge( array $first, array $second ) {
 
-        return array_merge( $first, $second );
+        return \array_merge( $first, $second );
 
     }
 
@@ -97,7 +97,7 @@ class FunctionHelper
      */
     public function errorLog( $message, $type, $file ) {
 
-        return error_log( $message, $type, $file );
+        return \error_log( $message, $type, $file );
 
     }
 
@@ -108,7 +108,7 @@ class FunctionHelper
      */
     public function getUniqueId() {
 
-        return uniqid();
+        return \uniqid();
 
     }
 
@@ -119,7 +119,7 @@ class FunctionHelper
      */
     public function obEndFlush() {
 
-        return ob_end_flush();
+        return \ob_end_flush();
 
     }
 
@@ -130,7 +130,7 @@ class FunctionHelper
      */
     public function fastcgiFinishRequest() {
 
-        return fastcgi_finish_request();
+        return \fastcgi_finish_request();
 
     }
 
@@ -141,7 +141,7 @@ class FunctionHelper
      */
     public function headersSent() {
 
-        return headers_sent();
+        return \headers_sent();
 
     }
 
@@ -156,7 +156,7 @@ class FunctionHelper
      */
     public function header( $string, $replace = TRUE, $code = NULL ) {
 
-        header( $string, $replace, $code );
+        \header( $string, $replace, $code );
 
     }
 
@@ -169,7 +169,7 @@ class FunctionHelper
      */
     public function functionExists( $string ) {
 
-        return function_exists( $string );
+        return \function_exists( $string );
 
     }
 
@@ -182,7 +182,7 @@ class FunctionHelper
      */
     public function arrayShift( array &$array ) {
 
-        return array_shift( $array );
+        return \array_shift( $array );
 
     }
 
@@ -195,7 +195,7 @@ class FunctionHelper
      */
     public function shuffle( array &$array ) {
 
-        shuffle( $array );
+        \shuffle( $array );
 
     }
 
@@ -208,7 +208,7 @@ class FunctionHelper
      */
     public function count( array $array ) {
 
-        return count( $array );
+        return \count( $array );
 
     }
 
@@ -219,7 +219,7 @@ class FunctionHelper
      */
     public function time() {
 
-        return time();
+        return \time();
 
     }
 
@@ -230,7 +230,7 @@ class FunctionHelper
      */
     public function uniqid() {
 
-        return uniqid();
+        return \uniqid();
 
     }
 
@@ -244,7 +244,7 @@ class FunctionHelper
      */
     public function implode( $glue, array $pieces ) {
 
-        return implode( $glue, $pieces );
+        return \implode( $glue, $pieces );
 
     }
 
@@ -258,7 +258,7 @@ class FunctionHelper
      */
     public function strpos( $haystack, $needle ) {
 
-        return strpos( $haystack, $needle );
+        return \strpos( $haystack, $needle );
 
     }
 
@@ -272,7 +272,7 @@ class FunctionHelper
      */
     public function ltrim( $string, $chars ) {
 
-        return ltrim( $string, $chars );
+        return \ltrim( $string, $chars );
 
     }
 
@@ -285,7 +285,7 @@ class FunctionHelper
      */
     public function realpath( $path ) {
 
-        return realpath( $path );
+        return \realpath( $path );
 
     }
 
