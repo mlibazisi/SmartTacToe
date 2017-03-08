@@ -19,6 +19,7 @@ which meets the following minimum configurations:
 - Rewrite module enabled
 - [SSL](https://en.wikipedia.org/wiki/Transport_Layer_Security) enabled
 - [Composer](https://getcomposer.org) installed and ready to go
+- [Curl](http://php.net/manual/en/book.curl.php) is installed and enabled
 
 You will need to have root access to your server, so that you can change the document root directory.
 
