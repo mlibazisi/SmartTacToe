@@ -23,23 +23,11 @@ which meets the following minimum configurations:
 
 You will need to have root access to your server, so that you can change the document root directory.
 
-Finally, you will need to [create a Slack App](https://api.slack.com/slack-apps). You can
-call it SmartTacToe if you like. There are many great tutorials online on how to create a slack App. Once your
-App is created, quickly familiarize yourself with the Slack API documentation
-so you know where to access the following:
-
-- Client Id
-- Client Secret
-- Verification Token
-- OAuth Access Token
-
-We will come back and configure the Slack App once SmartTacToe is setup on our web server.
-
-## Installation onto our web server
+## Installation onto web server
 
 *The following tutorial assumes you're running Apache on Ubuntu*
 
-**Step 1.** Download SmartTacToe onto your web directory
+**Step 1.** Download SmartTacToe into your web directory
 
 ```bash
 # Go to web root directory
@@ -94,28 +82,28 @@ sudo a2enmod rewrite
 sudo service apache2 restart
 ```
 
- Lets make sure we're good! Grab a browser and navigate to your url! You should see a HelloWorld welcome message!
+ Lets make sure we're good! Grab a browser and navigate to your url (**https**://your-url.something)! You should see a HelloWorld welcome message!
  If everything looks good, you're ready to create a Slack App
 
-## Creating and the Slack App
+## Creating and Configuring the Slack App
 
 **Step 1.** Got to your browser and visit the [Slack Api Page](https://api.slack.com)
 
 **Step 2.** Create an app and name it `SmartTacToe`
-⋅⋅*Click 'Start Building'
-⋅⋅*A popup will come up. Enter the App name as *SmartTacToe*, then select a Development Team and click *Create App*
+- Click 'Start Building'
+- A popup will come up. Enter the App name as *SmartTacToe*, then select a Development Team and click *Create App*
 
 **Step 3.** Click `Interactive Messages`
-⋅⋅*Then click `Enable Interactive Messages`
-⋅⋅*Then enter the `Request URL` as follows and save
+- Then click `Enable Interactive Messages`
+ Then enter the `Request URL` as follows and save
 
 ```bash
 {https://replace_with_you_website.com}/interact
 ```
 
 **Step 4.** From the menu options, Click `Slash Commands`
-⋅⋅*Then click `Create New Command`
-⋅⋅*For the command, enter
+- Then click `Create New Command`
+- For the command, enter
 
 ```bash
 /ttt
@@ -127,23 +115,23 @@ sudo service apache2 restart
 {https://replace_with_you_website.com}/command
  ```
 
-⋅⋅*Check the box titled **Escape channels, users, and links sent to your app**
+- Check the box titled **Escape channels, users, and links sent to your app**
 
 You can now click save and go to the next step!
 
 **Step 5.** Click `OAuth & Permissions`
-⋅⋅*For the `Redirect URLs` enter
+- For the `Redirect URLs` enter
 
  ```bash
 {https://replace_with_you_website.com}/auth
  ```
-⋅⋅*Click add then save!
+- Click add then save!
 
 **Step 6.** Scroll down to `Permission Scopes` and enter
 - chat:write:bot
 - search:read
 
-⋅⋅*Click save changes!
+ Click save changes!
 
 **Step 7.** Scroll up and click `Install App to Team`
 
@@ -153,7 +141,8 @@ to configure our server to be friends with the Slack App we just created
 ## Configuring SmartTacToe on the server
 
 **Step 1.** Navigate to SmartTacToe's home directory (the one that's a level above the document root you configured earlier)
-⋅⋅*From the home directory, move into the configuration directory as shown bellow:
+- From the home directory, move into the configuration directory as shown bellow:
+
  ```bash
 cd config
  ```
