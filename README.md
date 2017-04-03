@@ -8,8 +8,6 @@ Quick points about this implementation
 - **No PHP Framework Used**: Built from scratch, specifically for this game, without a framework
 - **Rapid Prototype**: Rapidly prototyped over a short span of about 8 days
 
-For more information on the points above, see the short discussion section at the end of this document.
-
 ## Pre-Requisites to Installation
 
 To play SmartTacToe, you will need a web server, e.g. [Apache](https://httpd.apache.org/),
@@ -197,64 +195,3 @@ and typing the command:
 The command above will give you instructions on how to play the game!
 
 **Don't forget to watch the emoji reactions on the left side of the Slack messages while playing a game!**
-
-## Discussion
-
-- STATELESS: I deliberately chose not to use any databases, sessions, or cookies to store
-  the state of the game and players. Using a database would have made the exercise a little too straight-forward, so
-  I wanted to challenge myself! I also wanted to see how far I could hack/bend the Slack API.
-
-- OPTIMAL-PLAY PREDICTIVE: I used the [MiniMax](https://en.wikipedia.org/wiki/Minimax)
-  Game Theory Algorithm to silently predict what the next best move should be. I used miniMax because quick
-  research showed me that its the staple algorithm for m,n,k-game games like Tic Tac Toe.
-
-- QUASI-SENTIENT: I thought it would be fun for the game to "watch" its players
-  playing and react to the moves they chose! This reaction is displayed on the left hand side of the Slack message
-  after every play in the form of an emoji.
-
-- This implementation does not use any PHP framework. Everything (except the two Vendor packages installed via composer) has been
-  coded from scratch specifically for this App.
-
-## Future Work
-
-- If I had time, I would have loved to improved the way emotions are expressed. For example, the game can determine if
-  a player's performance is improving or deteriorating, and thus respond appropriately.
-- Improve the efficiency of the miniMax algorithm by using Alpha Beta pruning
-- Improve the 'smartness' of the miniMax algorithm by using search depth to determine the best moves
-- It would have been nice, just for fun, to have some sort of benchmark to compare how scalable a stateless approach is compared to a datastore driven one
-- Logging over channels, with more insightful message details, to make the logs easily searchable and monitored
-
-## Caveats
-
-Because this tool was built in such a short time, on a slim schedule, there are a few tradeoffs that I had to unfortunately make (but I am fully aware of)
-
-- I am lacking big time on the unit tests and integration tests. This should ideally have a high coverage before even being committed to the repo!
-- The implementation of some of the routines and algorithms (such as the miniMax) could have been more efficient. What you will
-  see are more of 'rapid prototypes'.
-- The exception class naming conventions could have been a little more specific
-- Some of the method names could have been more descriptive, for example `GameService::end()` could have been `GameServer::endGame()`
-- The commits should have been smaller in size, as opposed to large chunks! This makes merging easier, among other things
-- Because this App is stateless, the **slash commands** may sometimes appear not to work, but this is because of a lag
-  in the Api's updating its state for Api calls. usually these commands will work after a few seconds. For example, if
-  you challenge a user `/ttt challenge @user` and then the user accepts the challenge, running the
-  command `/ttt status` immediately, will claim that there is currently not game in session, yet this will not be the case if you run
-  the same command a few seconds later. It becomes obvious that the `stateless` approach may not give the best user experience
-  for a production App. But its great as an "academic" excercise to learn more about how the Slack Api works.
-
-## So how does it work?
-
-- The states are stored in the interactive `message button` value fields.
-- The app enforces rules such as `only on game per channel` by doing a quick search of the channel messages.
-  For efficiency, it only searches messages in the perticular channel, that were posted by it, and that match a very
-  specific criteria. Only the most recent message matching the criteria is searched for
-- To avoid multiple states being stored on the channel, everytime a play makes a move, the previous message
-  is deleted using the `delete_original` flag.
-- The boards you see on the channel showing the player history do not have any state. They are just renderings. Only the
-  interactive boards (the one's with interactive buttons) have state, and there can be only one board at any give time.
-- If a game is inactive for a while (about 10mins), then it will be automatically rendered stale and deleted. This deletion
-  is triggered by commands such as `/ttt status` and `/ttt challenge @user`
-- To avoid clutter and confusion, only one active challenge is allowed. When someone creates a new challenge `/ttt challenge @user`
-  then any preceeding challenge requests that are still pending are automatically deleted!
-- The sentient aspect is driven by the miniMax algorithm. The App predicts what the best move should be (before the player makes the move)
-  and then it compares its prediction with the move made by the player. Well, the computer is usually the better player, so if the
-  user makes a different move, then the game posts an emoji with a negative emotion. The opposite is true.
